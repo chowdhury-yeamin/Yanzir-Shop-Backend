@@ -46,20 +46,5 @@ app.use('/api/orders', orderRoutes);
 app.use(notFound);
 app.use(errorHandler);
 
-const start = async () => {
-  try {
-    await connectDB(config.mongoUri);
 
-    app.listen(config.port, () => {
-      console.log(
-        `🚀 Yanzir API running on port ${config.port} in ${config.env} mode`
-      );
-    });
-  } catch (err) {
-    console.error('Failed to start server', err);
-    process.exit(1);
-  }
-};
-
-start();
-
+module.exports = app;

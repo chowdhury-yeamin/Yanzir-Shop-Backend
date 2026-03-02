@@ -1,11 +1,25 @@
 const Product = require('../models/Product');
 const { success } = require('../utils/apiResponse');
 
+const normalizeCategory = (input) => {
+  const raw = (input ?? '').toString().trim();
+  if (!raw) return raw;
+
+  const lower = raw.toLowerCase();
+
+  if (/(^|[\s_-])panjabi($|[\s_-])/.test(lower) || lower.includes('panjabi')) return 'Panjabi';
+  if (lower.includes('t-shirt') || lower.includes('tshirt') || lower.includes('t shirts') || lower.includes('t-shirts')) return 'T-Shirt';
+  if (lower.includes('access')) return 'Accessories';
+  if (lower.includes('shirt')) return 'Shirt';
+
+  return raw;
+};
+
 const buildProductQuery = (query) => {
   const filter = {};
 
   if (query.category) {
-    filter.category = query.category;
+    filter.category = normalizeCategory(query.category);
   }
 
   if (query.isFeatured) {
